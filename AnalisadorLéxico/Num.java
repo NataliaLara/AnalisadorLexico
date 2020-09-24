@@ -1,12 +1,12 @@
-package Lexico;
 
-public class Num extends Token{
-	//diferença da classe token é o dado value que é o valor da constante	
+
+public class Num /*extends Token*/{
+	//diferenï¿½a da classe token ï¿½ o dado value que ï¿½ o valor da constante	
 	
 	public final int value;
 	
 	public Num(int value) {
-		super(Tag.NUM);
+		//super(Tag.NUM);
 		this.value=value;
 	}
 	

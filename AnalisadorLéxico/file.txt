@@ -1,0 +1,16 @@
+programa teste1 is
+a, b: int;
+result : int;
+a,x : float
+init
+a = 12a;
+x = 12.8;
+in << a;
+in << b;
+in << c
+8.
+result = (a*b + 1) / (c+2);
+out "Resultado: ";
+out >> result;
+end. 65535 .
+isNumber
