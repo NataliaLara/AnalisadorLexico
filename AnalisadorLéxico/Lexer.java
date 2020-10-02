@@ -1,5 +1,3 @@
-
-
 import java.io.*;
 import java.util.*;
 
@@ -51,6 +49,11 @@ public class Lexer {
 	//l� o pr�ximo caractere do arquivo
 	private void readch() throws IOException{
 		ch  = (char)file.read();
+		//System.out.println("ch: "+ch);
+		if (ch==65535){
+			//System.out.println("Fim");
+		}
+		
 	}
 	
 	//L� o pr�ximo caractere do arquivo e verifica se � igual a c
@@ -63,8 +66,8 @@ public class Lexer {
 	
 	// m�todo que implementa a an�lise l�xica
 	//m�todo chamado pelo analisador sint�tico
-	public Token scan() throws IOException{
-		ch=' ';
+	public Token scan() throws IOException,NumberException,WordException,TokenException{
+		
 		//Desconsidera delimitadores 
 		for(;; readch()) {
 			if(ch == ' ' || ch=='\t' || ch =='\r' || ch == '\b')continue;
@@ -75,67 +78,124 @@ public class Lexer {
 		//Reconhecimento de tokes
 		switch (ch) {
 			//Operadores
-			case '*':				
+			case '*':	
+				ch=' ';			
 				return Word.mult;
-			case '+':				
+			case '+':		
+				ch=' ';			
 				return Word.plus;
 			case '-':
+				ch=' ';		
 				return Word.minus;
 			case '/':
+				ch=' ';
 				return Word.div;
 			case '!':
 				if (readch('=')) {
+					ch=' ';
 					return Word.ne;
 				}				
 				else return Word.not;
 			case '&':
 				if (readch('&')) {
+					ch=' ';
 					return Word.and;
 				}				
-				else return new Token('&');
+				else {
+					ch=' ';
+					return new Token('&');
+				}
 			case '|':
 				if (readch('|')) {
+					ch=' ';
 					return Word.or;
-				}else return new Token('|');
+				}else {
+					ch=' ';
+					return new Token('|');
+				}
 			case '=':
 				if (readch('=')) {
+					ch=' ';
 					return Word.eq;
 				}				
-				else return Word.assing;
+				else {
+					ch=' ';
+					return Word.assing;
+				}
 			case '<':
 				readch();
 				if (ch=='=') {
+					ch=' ';
 					return Word.le;
 				}
 				if (ch=='<') {
+					ch=' ';
 					return Word.ll;
 				}
+				ch=' ';
 				return Word.lt;
 			case '>':
 				readch();
 				if (ch=='=') {
+					ch=' ';
 					return Word.ge;
 				}
 				if (ch=='>') {
+					ch=' ';
 					return Word.gg;
 				}
 				return Word.gt;
 			case '(':
+				ch=' ';
 				return Word.lp;
 			case ')':
+				ch=' ';
 				return Word.rp;
 			case ';':
+				ch=' ';
 				return Word.semi;
 			case ',':
+				ch=' ';
 				return Word.comma;
 			case ':':
+				ch=' ';
 				return Word.colon;
 			case '\'':
+				ch=' ';
 				return Word.sq;
-			case '\"':
-				return Word.dq;
+			case '\"' : //leitura de literal
+				StringBuffer sb = new StringBuffer();
+				do {
+					sb.append(ch);
+					readch();
+				}while(ch!='\n'&ch !='\"');
+				if(ch=='\n')
+					throw new WordException("Má formação de literal na linha "+line);
+				else{
+					sb.append(ch);
+					String s = sb.toString();
+					ch = ' ';
+					return new Word(s, 312);
+				}	
+			case  '“': //leitura de literal
+			sb = new StringBuffer();
+			do {
+				sb.append(ch);
+				readch();
+			}while(ch!='\n'&ch!='”');
+			if(ch=='\n')
+				throw new WordException("Má formação de literal na linha "+line);
+			else{
+				sb.append(ch);
+				String s = sb.toString();
+				ch = ' ';
+				return new Word(s, 312);
+			}		
 			case '.':
+				ch=' ';
 				return Word.dot;
+			case '_':
+				throw new WordException("Token não especificado na gramática na linha "+line);
 			
 		}
 		
@@ -150,19 +210,15 @@ public class Lexer {
 					isfloat = true;
 					readch();
 					if (!Character.isDigit(ch)){
-						//criar excecao
-						//System.out.println("Erro - float");
-						return new Word("Erro - float",Tag.ID);
+						throw new NumberException("Número Mal Formado na linha "+line);
 					}
 					break;
 				}
 			}while(Character.isDigit(ch));
 			if(isfloat==false){
-				//verificar caractere depois de numero
 				if(Character.isLetter(ch)){
 					ch=' ';
-					//erro - mal formacao do int
-					return new Word("Erro: Int mal formado",Tag.ID);
+					throw new NumberException("Número Mal Formado na linha "+line);
 				}
 				return new Int((int)value);
 			}		
@@ -174,14 +230,12 @@ public class Lexer {
 					readch();
 				}while(Character.isDigit(ch));
 				if(Character.isLetter(ch)){
+					
 					ch=' ';
-					//erro - mal formacao do int
-					return new Word("Erro: Float Mal formado",Tag.FLOAT);
+					throw new NumberException("Número Mal Formado na linha "+line);
 				}
 				return new Float(value);
 			}
-			
-
 			
 		}
 		
@@ -195,16 +249,17 @@ public class Lexer {
 			
 			String s = sb.toString();
 			Word w = (Word)words.get(s);
-			if (w!=null) return w; //inclui se palavra n�o existe na HashTable
+			if (w!=null) return w; //inclui se palavra nao existe na HashTable
 			w = new Word(s,Tag.ID);
 			words.put(s, w);
 			return w;
 		}
-		
-		//Caracteres nao especificados
-		Token t = new Token(ch);
+
+		if(ch==65535){ //fim do arquivo
+			return null;
+		}
 		ch = ' ';
-		return t;		
+		throw new WordException("Token não especificado na gramática na linha "+line);		
 		
 	}
 	

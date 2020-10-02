@@ -1,0 +1,12 @@
+program teste6
+ a, b, outro: int;
+ outro=1;
+ begin
+ repeat
+ out("A");
+ in(a);
+ out("B");
+ in(b);
+ outro=0;
+ until (outro == 0)
+ end

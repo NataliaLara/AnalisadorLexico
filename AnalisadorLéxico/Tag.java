@@ -50,7 +50,9 @@ public class Tag {
         SQ = 307,
         DQ = 308,
         ID = 309,
-        INT_=310;
+        INT_=310,
+        EOF = 311,
+        LIT = 312; //literal
 	
 	// a numera��o � dessa forma para simplificar a implementa��o
 	//o autor tomou base da tabela asc (vai at� 255)
