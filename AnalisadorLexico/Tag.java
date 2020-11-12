@@ -1,4 +1,4 @@
-
+package AnalisadorLexico;
 
 public class Tag {
 	

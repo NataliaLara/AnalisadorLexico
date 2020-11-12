@@ -1,3 +1,4 @@
+package AnalisadorLexico;
 public class Float extends Token{
 	
 	public final float value;

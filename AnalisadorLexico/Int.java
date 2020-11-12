@@ -1,3 +1,4 @@
+package AnalisadorLexico;
 public class Int extends Token{
 	
 	public final int value;

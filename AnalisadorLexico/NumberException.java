@@ -1,3 +1,4 @@
+package AnalisadorLexico;
 public class NumberException extends Exception{ 
 
     private String msg;

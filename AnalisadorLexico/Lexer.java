@@ -1,3 +1,4 @@
+package AnalisadorLexico;
 import java.io.*;
 import java.util.*;
 

@@ -1,3 +1,4 @@
+package AnalisadorLexico;
 public class TokenException extends Exception{ 
 
     private String msg;

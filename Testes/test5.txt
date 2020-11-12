@@ -2,11 +2,11 @@ program teste5
  a, b, c, maior, outro: int;
  begin
  repeat
- out(“A”);
+ out("A");
  in(a);
- out(“B”);
+ out("B");
  in(b);
- out(“C”);
+ out("C");
  in(c);
  if ( (a>b) and (a>c) ) end
  maior = a
@@ -19,9 +19,9 @@ program teste5
  maior = c
  end
  end;
- out(“Maior valor:””);
+ out("Maior valor:"");
  out (maior);
- out (“Outro?”);
+ out ("Outro?");
  in(outro);
  until (outro == 0)
  end.

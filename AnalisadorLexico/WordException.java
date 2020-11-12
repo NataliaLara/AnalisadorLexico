@@ -1,3 +1,4 @@
+package AnalisadorLexico;
 public class WordException extends Exception{ 
 
     private String msg;
