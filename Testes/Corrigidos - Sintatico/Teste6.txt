@@ -1,0 +1,14 @@
+program teste6 is
+ declare a, b, outro: int
+ init
+ outro=1;
+ repeat
+ out >> "A";
+ in<<a;
+ out>>"B";
+ in<<b;
+ outro=0
+ until (outro == 0)
+ end
+
+ 

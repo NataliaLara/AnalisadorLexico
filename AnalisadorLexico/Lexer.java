@@ -120,7 +120,7 @@ public class Lexer {
 					return Word.eq;
 				}				
 				else {
-					ch=' ';
+					//ch=' ';
 					return Word.assing;
 				}
 			case '<':

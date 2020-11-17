@@ -13,4 +13,3 @@ begin
  out "Resultado: ";
  out >> result;
 end.
-
